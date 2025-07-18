@@ -204,20 +204,27 @@
     Accordion
     -------------------------*/
  $(document).ready(function () {
-  var $accordion = $(".faequently-accordion");
-  if ($accordion.length && $.fn.collapse) {
-    $accordion.collapse({
-      accordion: true,
-      open: function () {
-        this.slideDown(300);
-      },
-      close: function () {
-        this.slideUp(300);
-      },
-    });
-  } else {
-    console.warn("Accordion element not found or plugin not loaded");
-  }
+  // Hide all descriptions initially
+  $(".faequently-description").hide();
+
+  // Accordion click handler
+  $(".faequently-accordion h4").on("click", function () {
+    const $clickedHeader = $(this);
+    const $currentDesc = $clickedHeader.next(".faequently-description");
+
+    if ($currentDesc.is(":visible")) {
+      $currentDesc.slideUp(300);
+      $clickedHeader.attr("aria-expanded", "false");
+    } else {
+      // Close others
+      $(".faequently-description").slideUp(300);
+      $(".faequently-accordion h4").attr("aria-expanded", "false");
+
+      // Open the clicked one
+      $currentDesc.slideDown(300);
+      $clickedHeader.attr("aria-expanded", "true");
+    }
+  });
 });
   /*--
         ScrollUp Active
